@@ -4,6 +4,7 @@ ping www.baidu.com
 timedatectl set-ntp true  
 lsblk  
 fdisk /dev/sda  
+
 | 块设备 | 扇区个数 | ID | for |
 | ----- | ------- | --- | --- |
 | /dev/sda1 | 2097152 | 83 | /boot |
