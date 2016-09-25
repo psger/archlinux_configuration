@@ -365,7 +365,6 @@ tar -xjvf stardict-kdic-computer-gb-2.4.2 -C /usr/share/stardict/dic
 tar -xjvf stardict-xiandaihanyucidian_fix-2.4.2 -C /usr/share/stardict/dic  
 tar -xjvf stardict-hanyuchengyucidian_fix-2.4.2 -C /usr/share/stardict/dic  
 ```
-
 5. 重启星际译王，点房子图标->词典管理，把这两个词典移到最前面，并把每处顺序都改为计算机词汇、朗道英汉词典、朗道汉英词典、简明英汉词典、简明汉英词典、懒虫简明英汉词典、懒虫简明汉英词典、现代汉语词典、汉语成语词典  
 6. 首选项->主窗口->选项，把启动时隐藏主窗口勾选，主窗口->输入，即输即查取消勾选  
 > 若下载并配置好以上词典，则忽略以下网络词典的配置  
