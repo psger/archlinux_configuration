@@ -98,10 +98,10 @@ pacman -S bumblebee
 gpasswd -a yotta bumblebee  
 systemctl enable bumblebeed.service  
 > 安装之后，若重启之后看到  
-> ```
-> [    15.824050] nouveau E[     DRM]Pointer to TMDS table invalid
-> [    15.824072] nouveau E[     DRM]Pointer to flat panel table invalid
-> ```
+```
+[    15.824050] nouveau E[     DRM]Pointer to TMDS table invalid
+[    15.824072] nouveau E[     DRM]Pointer to flat panel table invalid
+```
 > 则不成功，需重新查看wiki  
 > 还有一种方法验证，optirun glxgears -info若不成功则optirun glxspheres64成功即可（32位则改64为32）  
 
@@ -300,7 +300,6 @@ yaourt -S gnome-shell-system-monitor-applet-git
 1. 名称：启动终端  
 命令：gnome-terminal  
 快捷键：Pause Break  
-
 2. 名称：文件管理器  
 命令：nautilus  
 快捷键：Scroll Lock  
