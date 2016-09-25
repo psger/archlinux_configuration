@@ -4,12 +4,15 @@ ping www.baidu.com
 timedatectl set-ntp true  
 lsblk  
 fdisk /dev/sda  
-<th><tr><td>块设备</td><td>扇区个数</td><td>ID</td><td>for</td></tr></th>
-<tr><td>/dev/sda1</td><td>2097152</td><td>83</td><td>/boot</td></tr>
-<tr><td>/dev/sda5</td><td>167772160</td><td>83</td><td>/</td></tr>
-<tr><td>/dev/sda6</td><td>104857600</td><td>83</td><td>/var</td></tr>
-<tr><td>/dev/sda7</td><td>314572800</td><td>83</td><td>/home</td></tr>
-<tr><td>/dev/sda8</td><td>16777216</td><td>82</td><td>swap</td></tr>
+
+| 块设备 | 扇区个数 | ID | for |
+| ----- | ------- | --- | --- |
+| /dev/sda1 | 2097152 | 83 | /boot |
+| /dev/sda5 | 167772160 | 83 | / |
+| /dev/sda6 | 104857600 | 83 | /var |
+| /dev/sda7 | 314572800 | 83 | /home |
+| /dev/sda8 | 16777216 | 82 | swap |
+
 lsblk  
 mkfs.ext4 /dev/sda1	# /boot  
 mkfs.ext4 /dev/sda5	# /  
