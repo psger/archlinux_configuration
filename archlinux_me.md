@@ -98,7 +98,7 @@ pacman -S bumblebee
 gpasswd -a yotta bumblebee  
 systemctl enable bumblebeed.service  
 > 安装之后，若重启之后看到  
-```
+> ```
 [    15.824050] nouveau E[     DRM]Pointer to TMDS table invalid
 [    15.824072] nouveau E[     DRM]Pointer to flat panel table invalid
 ```
