@@ -5,13 +5,13 @@ timedatectl set-ntp true
 lsblk  
 fdisk /dev/sda  
 
-块设备 | 扇区个数 | ID | for
----|----|---
-/dev/sda1 | 2097152 | 83 | /boot
-/dev/sda5 | 167772160 | 83 | /
-/dev/sda6 | 104857600 | 83 | /var
-/dev/sda7 | 314572800 | 83 | /home
-/dev/sda8 | 16777216 | 82 | swap
+块设备 | 扇区个数 | ID | for  
+---|----|---  
+/dev/sda1 | 2097152 | 83 | /boot  
+/dev/sda5 | 167772160 | 83 | /  
+/dev/sda6 | 104857600 | 83 | /var  
+/dev/sda7 | 314572800 | 83 | /home  
+/dev/sda8 | 16777216 | 82 | swap  
 
 lsblk  
 mkfs.ext4 /dev/sda1	# /boot  
