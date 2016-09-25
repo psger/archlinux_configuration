@@ -6,7 +6,7 @@ lsblk
 fdisk /dev/sda  
 
 块设备 | 扇区个数 | ID | for  
----|----|---  
+--- | ---- | ---  
 /dev/sda1 | 2097152 | 83 | /boot  
 /dev/sda5 | 167772160 | 83 | /  
 /dev/sda6 | 104857600 | 83 | /var  
