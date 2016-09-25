@@ -4,15 +4,12 @@ ping www.baidu.com
 timedatectl set-ntp true  
 lsblk  
 fdisk /dev/sda  
-
-块设备 | 扇区个数 | ID | for  
---- | ---- | ---  
-/dev/sda1 | 2097152 | 83 | /boot  
-/dev/sda5 | 167772160 | 83 | /  
-/dev/sda6 | 104857600 | 83 | /var  
-/dev/sda7 | 314572800 | 83 | /home  
-/dev/sda8 | 16777216 | 82 | swap  
-
+<th><tr><td>块设备</td><td>扇区个数</td><td>ID</td><td>for</td></tr></th>
+<tr><td>/dev/sda1</td><td>2097152</td><td>83</td><td>/boot</td></tr>
+<tr><td>/dev/sda5</td><td>167772160</td><td>83</td><td>/</td></tr>
+<tr><td>/dev/sda6</td><td>104857600</td><td>83</td><td>/var</td></tr>
+<tr><td>/dev/sda7</td><td>314572800</td><td>83</td><td>/home</td></tr>
+<tr><td>/dev/sda8</td><td>16777216</td><td>82</td><td>swap</td></tr>
 lsblk  
 mkfs.ext4 /dev/sda1	# /boot  
 mkfs.ext4 /dev/sda5	# /  
@@ -97,7 +94,9 @@ pacman -S xf86-input-synapticsf	# 触摸板
 pacman -S bumblebee  
 gpasswd -a yotta bumblebee  
 systemctl enable bumblebeed.service  
+
 > 安装之后，若重启之后看到  
+
 ```
 [    15.824050] nouveau E[     DRM]Pointer to TMDS table invalid
 [    15.824072] nouveau E[     DRM]Pointer to flat panel table invalid
@@ -363,9 +362,11 @@ tar -xjvf stardict-kdic-computer-gb-2.4.2 -C /usr/share/stardict/dic
 tar -xjvf stardict-xiandaihanyucidian_fix-2.4.2 -C /usr/share/stardict/dic  
 tar -xjvf stardict-hanyuchengyucidian_fix-2.4.2 -C /usr/share/stardict/dic  
 ```
+
 5. 重启星际译王，点房子图标->词典管理，把这两个词典移到最前面，并把每处顺序都改为计算机词汇、朗道英汉词典、朗道汉英词典、简明英汉词典、简明汉英词典、懒虫简明英汉词典、懒虫简明汉英词典、现代汉语词典、汉语成语词典  
 6. 首选项->主窗口->选项，把启动时隐藏主窗口勾选，主窗口->输入，即输即查取消勾选  
 > 若下载并配置好以上词典，则忽略以下网络词典的配置  
+
 7. 首选项->网络词典，用账号yottaliu登录，同时把网络浏览器打开网址的命令改为/opt/google/chrome/chrome，把总是使用此命令打开网址勾选  
 8. 词典管理->网络词典->添加，在zh_CN中选择以下词典，并按以下顺序排列：  
 > 1. 计算机词汇  
