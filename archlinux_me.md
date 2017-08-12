@@ -6,7 +6,7 @@ lsblk
 fdisk /dev/sda  
 
 块设备 | 扇区个数 | ID | for
------ | ------- | --- | ---
+---|---|---|---
 /dev/sda1 | 2097152 | 83 | /boot
 /dev/sda5 | 167772160 | 83 | /
 /dev/sda6 | 104857600 | 83 | /var
@@ -73,6 +73,16 @@ passwd
 exit  
 reboot  
 
+# 启用bbr拥塞控制算法
+vim /etc/modules-load.d/80-bbr.conf
+```bash
+tcp_bbr
+```
+vim /etc/sysctl.d/80-bbr.conf
+```bash
+net.ipv4.tcp_congestion_control = bbr
+```
+
 # 桌面配置
 ## 添加普通用户
 useradd -m -g users -G wheel,audio,video,lp,log,uucp,rfkill,network,optical,floppy,storage,scanner,power,games,vboxusers yotta  
@@ -94,16 +104,14 @@ pacman -S xf86-video-intel	# 这个是 Intel
 pacman -S xf86-video-ati	# 这个是 amd  
 pacman -S xf86-input-synapticsf	# 触摸板  
 2. 参照archwiki安装[bumblebee](https://wiki.archlinux.org/index.php/Bumblebee)，若安装的是开源显卡驱动，则
-pacman -S bumblebee  
+pacman -S bumblebee bbswitch  
 gpasswd -a yotta bumblebee  
 systemctl enable bumblebeed.service  
-
 > 安装之后，若重启之后看到  
-
-```
-[    15.824050] nouveau E[     DRM]Pointer to TMDS table invalid
-[    15.824072] nouveau E[     DRM]Pointer to flat panel table invalid
-```
+> ```
+> [    15.824050] nouveau E[     DRM]Pointer to TMDS table invalid
+> [    15.824072] nouveau E[     DRM]Pointer to flat panel table invalid
+> ```
 > 则不成功，需重新查看wiki  
 > 还有一种方法验证，optirun glxgears -info若不成功则optirun glxspheres64成功即可（32位则改64为32）  
 
@@ -141,6 +149,22 @@ reboot #然后进入图形界面，普通用户（yotta）登陆
 >>汉语（Pinyin）  
 
 su - root #以root身份继续进行其他操作  
+
+## 安装kde
+pacman -S plasma kde-applications  
+systemctl enable ssdm.service  
+pacman -S fcitx-im fcitx-configtool fcitx-sogoupinyin fcitx-googlepinyin fcitx-sunpinyin  
+su - yotta  
+vim ~/.xprofile  
+```bash
+export LANG=zh_CN.UTF-8
+export LANGUAGE=zh_CN:en_US
+export LC_CTYPE=en_US.UTF-8
+export GTK_IM_MODULE=fcitx
+export QT_IM_MODULE=fcitx
+export XMODIFIERS="@im=fcitx"
+```
+exit  
 
 ## 配置archlinuxcn
 >这一步因为要访问网页，但chrome浏览器属于中文仓库（正在配置的就是），无法安装  
@@ -191,6 +215,9 @@ vim /etc/shadowsocks/hk.json
 >通用方法是cp /etc/shadowsocks/example.json /etc/shadowsocks/hk.json  
 >然后编辑hk.json，删除fast_open那一行  
 >同样格式添加jp.json  
+>server参数还可以是个列表，如["abc.net", "1.2.3.4"]
+>fast_open需要服务端和客户端内核为Linux 3.7.1+，且两端OS都要开tcp_fastopen，详细[参见github关于TCP-Fast-Open的介绍](https://github.com/shadowsocks/shadowsocks/wiki/TCP-Fast-Open)
+>workers参数表示进程数，默认为1，多进程在处理大网络流量时效率更高
 
 systemctl enable shadowsocks@hk.service  
 su - yotta  
@@ -253,19 +280,30 @@ pacman -S ntfs-3g
 pacman -S openssh  
 pacman -S telepathy  
 pacman -S wps-office	# 中文仓库  
-yaourt -S haroopad  
+yaourt -S haroopad tldr-git  
 pacman -S atom-editor  
+pacman -S retext  
+pacman -S pycharm-community  
+pacman -S megasync  
 pacman -S gedit-plugins  
-pacman -S netease-cloud-music	#中文仓库  
-pacman -S abs screenfetch wget curl autojump ccal mlocate htop ncdu pkgfile net-tools  
+pacman -S netease-cloud-music	# 中文仓库  
+pacman -S abs screenfetch wget curl tree autojump ccal mlocate htop ncdu pkgfile xchat weechat indent speedtest-cli cloc net-tools  
 >net-tools提供了ifconfig命令  
 
-pacman -S linux-docs jdk8-openjdk openjdk8-doc qt5-doc gcc-docs groovy-docs php-docs python-docs  
+pacman -S linux-docs jdk8-openjdk openjdk8-doc qt5-doc gcc-docs groovy-docs php-docs python-docs tomcat8 genymotion  
 pacman -S virtualbox virtualbox-host-modules-arch  
 pacman -S qemu qemu-launcher  
 >qemu已经带有调试功能，而bochs则需要源码安装，否则不带有调试功能  
 
+pacman -S deepin-qq-im  
+>少数可以用的QQ软件之一  
+
 pacman -S gimp  
+pacman -S kdeconnect	# 用手机控制kde，手机需要装同名客户端
+pip install qrcode		# 可以用命令行生产命令行的二维码，可以用于shadowsocks，例如
+```bash
+echo -n "ss://"`echo -n aes-256-cfb:password@1.2.3.4:8388 | base64` | qr
+```
 
 ## 安装oh my zsh
 pacman -S zsh  
@@ -275,7 +313,7 @@ cp .oh-my-zsh/templates/zshrc.zsh-template ~/.zshrc
 vim ~/.zshrc  
 ```bash
 ZSH_THEME="ys"
-plugins=(git archlinux systemd autojump sublime)
+plugins=(git archlinux systemd autojump sublime zsh-wakatime)
 ```
 exit  
 >其他配置参见[github](https://github.com/robbyrussell/oh-my-zsh)  
@@ -296,12 +334,18 @@ fi
 ```
 >也可以安装aur中的gnome-terminal-transparency来达到终端透明效果，但是此方法无法实现标题栏透明。
 
+## 安装vim、zsh、chrome版的wakatime插件
+>参考[wakatime官网](https://wakatime.com)
+>>安装wakatime的vim插件时要注意，若使用**Using Vundle**安装方法，官方的`echo "Plugin 'wakatime/vim-wakatime'" >> ~/.vimrc && vim +PluginInstall`这条命令中的`~/.vimrc`应改为`~/.vimrc.local`，因为spf13-vim推荐用这个文件来自定义
+
 ## gnome桌面细节调整
 yaourt -S gnome-shell-system-monitor-applet-git  
+yaourt -S gnome-shell-extension-dynamic-top-bar  
 打开设置->键盘->自定义快捷键，添加两个快捷键如下  
 1. 名称：启动终端  
 命令：gnome-terminal  
 快捷键：Pause Break  
+
 2. 名称：文件管理器  
 命令：nautilus  
 快捷键：Scroll Lock  
@@ -320,6 +364,7 @@ yaourt -S gnome-shell-system-monitor-applet-git
 
 >扩展：  
 >>System-monitor：打开
+>>Dynamic top bar：打开
 
 >桌面：  
 >>桌面图标：全部取消，然后选择关闭  
@@ -368,7 +413,6 @@ tar -xjvf stardict-hanyuchengyucidian_fix-2.4.2 -C /usr/share/stardict/dic
 5. 重启星际译王，点房子图标->词典管理，把这两个词典移到最前面，并把每处顺序都改为计算机词汇、朗道英汉词典、朗道汉英词典、简明英汉词典、简明汉英词典、懒虫简明英汉词典、懒虫简明汉英词典、现代汉语词典、汉语成语词典  
 6. 首选项->主窗口->选项，把启动时隐藏主窗口勾选，主窗口->输入，即输即查取消勾选  
 > 若下载并配置好以上词典，则忽略以下网络词典的配置  
-
 7. 首选项->网络词典，用账号yottaliu登录，同时把网络浏览器打开网址的命令改为/opt/google/chrome/chrome，把总是使用此命令打开网址勾选  
 8. 词典管理->网络词典->添加，在zh_CN中选择以下词典，并按以下顺序排列：  
 > 1. 计算机词汇  
@@ -399,3 +443,14 @@ tar -xjvf stardict-hanyuchengyucidian_fix-2.4.2 -C /usr/share/stardict/dic
 
 # 其他开发环境
 对照[archwiki](https://wiki.archlinux.org)安装并配置apache，mysql（现在叫mariaDB），PHP，Adminer，并且把PHP的配置文件中的pdo_mysql（pdo是PHP中连接数据库的方式）和iconv（转换编码的工具）两个扩展打开（即把/etc/php/php.ini中的extension=pdo_mysql.so和extension=iconv.so取消注释）。
+
+pacman -S opencv  
+sudo pip install mysql-connector numpy  
+
+## 安装redis和redis的python客户端
+pacman -S redis  
+sudo pip install redis  
+
+## 安装mongodb和pymongo
+pacman -S mongodb
+sudo pip install pymongo
