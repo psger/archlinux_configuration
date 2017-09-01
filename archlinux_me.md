@@ -325,14 +325,20 @@ curl https://j.mp/spf13-vim3 -L > spf13-vim.sh && sh spf13-vim.sh
 >具体使用方法参见[作者github](https://github.com/spf13/spf13-vim)  
 
 ## 终端透明
-在正在使用的shell的配置文件（~/.zshrc或 ~/.bashrc）中加入如下代码  
+在正在使用的shell的配置文件（~/.zshrc或 ~/.bashrc）中加入如下代码，这两个文件是启动新shell时加载  
 ```bash
 if [ -n "$WINDOWID" ]; then
         TRANSPARENCY_HEX=$(printf 0x%x $((0xffffffff * 80 / 100)))
         xprop -id "$WINDOWID" -f _NET_WM_WINDOW_OPACITY 32c -set _NET_WM_WINDOW_OPACITY "$TRANSPARENCY_HEX"
 fi
 ```
->也可以安装aur中的gnome-terminal-transparency来达到终端透明效果，但是此方法无法实现标题栏透明。
+>也可以安装aur中的gnome-terminal-transparency来达到终端透明效果，但是此方法无法实现标题栏透明。  
+
+## 设置环境变量
+在正在使用的shell配置文件（~/.zshrc或 ~/.bashrc）中加入如下代码  
+```bash
+export PATH="${PATH}:/home/yotta/111programming/linux/scripts"
+```
 
 ## 安装vim、zsh、chrome版的wakatime插件
 >参考[wakatime官网](https://wakatime.com)
