@@ -286,7 +286,7 @@ pacman -S retext
 pacman -S pycharm-community  
 pacman -S megasync  
 pacman -S gedit-plugins  
-pacman -S netease-cloud-music	# 中文仓库  
+pacman -S netease-cloud-music besttrace	# 中文仓库  
 pacman -S abs screenfetch wget curl tree autojump ccal mlocate htop ncdu pkgfile xchat weechat indent speedtest-cli cloc net-tools  
 >net-tools提供了ifconfig命令  
 
@@ -304,6 +304,7 @@ pip install qrcode		# 可以用命令行生产命令行的二维码，可以用�
 ```bash
 echo -n "ss://"`echo -n aes-256-cfb:password@1.2.3.4:8388 | base64` | qr
 ```
+pip install ipython ptipython bpython cffi
 
 ## 安装oh my zsh
 pacman -S zsh  
