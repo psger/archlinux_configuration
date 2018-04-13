@@ -57,6 +57,8 @@ tzselect	# 4 9 1 1
 ln -s /usr/share/zoneinfo/Asia/Shanghai /etc/localtime  
 hwclock --systohc --utc  
 mkinitcpio -p linux  
+pacman -S linux-ucode # for Intel
+pacman -S linux-firmware #for AMD
 pacman -S grub os-prober  
 grub-install /dev/sda  
 grub-mkconfig -o /boot/grub/grub.cfg  
@@ -80,12 +82,14 @@ tcp_bbr
 ```
 vim /etc/sysctl.d/80-bbr.conf
 ```bash
+net.core.default_qdisc = fq
 net.ipv4.tcp_congestion_control = bbr
 ```
+sysctl --system
 
 # 桌面配置
 ## 添加普通用户
-useradd -m -g users -G wheel,audio,video,lp,log,uucp,rfkill,network,optical,floppy,storage,scanner,power,games,vboxusers yotta  
+useradd -m -g users -aG wheel,audio,video,lp,log,uucp,rfkill,network,optical,floppy,storage,scanner,power,games,vboxusers yotta  
 passwd yotta  
 pacman -S sudo  
 visudo	# 或者vim /etc/sudoers  
@@ -152,7 +156,7 @@ su - root #以root身份继续进行其他操作
 
 ## 安装kde
 pacman -S plasma kde-applications  
-systemctl enable ssdm.service  
+systemctl enable sddm.service  
 pacman -S fcitx-im fcitx-configtool fcitx-sogoupinyin fcitx-googlepinyin fcitx-sunpinyin  
 su - yotta  
 vim ~/.xprofile  
@@ -187,7 +191,7 @@ Include = /etc/pacman.d/mirrorlist
 ```
 然后在文件末尾添加  
 ```bash
-[archLinuxcn]
+[archlinuxcn]
 SigLevel = Optional TrustedOnly
 Include = /etc/pacman.d/archlinuxcn
 ```
@@ -280,6 +284,7 @@ pacman -S ntfs-3g
 pacman -S openssh  
 pacman -S telepathy  
 pacman -S wps-office	# 中文仓库  
+pacman -S foxitreader	# 护眼pdf阅读器 中文仓库  
 yaourt -S haroopad tldr-git  
 pacman -S atom-editor  
 pacman -S retext  
@@ -287,12 +292,12 @@ pacman -S pycharm-community
 pacman -S megasync  
 pacman -S gedit-plugins  
 pacman -S netease-cloud-music besttrace	# 中文仓库  
-pacman -S abs screenfetch wget curl tree autojump ccal mlocate htop ncdu pkgfile xchat weechat indent speedtest-cli cloc net-tools  
+pacman -S abs screenfetch wget curl tree expect autojump ccal mlocate htop ncdu pkgfile xchat weechat indent speedtest-cli cloc net-tools  
 >net-tools提供了ifconfig命令  
 
 pacman -S linux-docs jdk8-openjdk openjdk8-doc qt5-doc gcc-docs groovy-docs php-docs python-docs tomcat8 genymotion  
 pacman -S virtualbox virtualbox-host-modules-arch  
-pacman -S qemu qemu-launcher  
+pacman -S qemu virt-manager  
 >qemu已经带有调试功能，而bochs则需要源码安装，否则不带有调试功能  
 
 pacman -S deepin-qq-im  
@@ -304,7 +309,7 @@ pip install qrcode		# 可以用命令行生产命令行的二维码，可以用�
 ```bash
 echo -n "ss://"`echo -n aes-256-cfb:password@1.2.3.4:8388 | base64` | qr
 ```
-pip install ipython ptipython bpython cffi
+pip install ipython bpython cffi
 
 ## 安装oh my zsh
 pacman -S zsh  
